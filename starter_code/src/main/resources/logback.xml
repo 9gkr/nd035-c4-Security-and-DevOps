@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <Appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} %msg %n</pattern>
+        </encoder>
+    </Appender>
+
+    <Appender name="splunk" class="com.splunk.logging.HttpEventCollectorLogbackAppender">
+        <url>http://localhost:8088</url>
+        <token>1c41801d-b077-4ee8-8335-ea346de613ab</token>
+        <index>demo_events</index>
+        <source>final_project_events</source>
+        <sourcetype>log4j</sourcetype>
+
+        <disableCertificateValidation>true</disableCertificateValidation>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%msg%n</pattern>
+        </layout>
+    </Appender>
+    <root level="info">
+        <appender-ref ref="console" />
+
+    </root>
+    <logger name ="com.example.demo" level="info">
+        <appender-ref ref="splunk"/>
+        <appender-ref ref="console" />
+    </logger>
+</configuration>
