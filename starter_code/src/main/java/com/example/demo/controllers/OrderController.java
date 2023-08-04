@@ -40,10 +40,9 @@ public class OrderController {
 			return ResponseEntity.notFound().build();
 		}
 		UserOrder order = UserOrder.createFromCart(user.getCart());
-		
+		orderRepository.save(order);
 		// add log for create order success
 		log.info("OrderController: Create order success");
-		orderRepository.save(order);
 		return ResponseEntity.ok(order);
 	}
 	
