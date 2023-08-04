@@ -27,15 +27,22 @@ public class OrderController {
 	
 	@Autowired
 	private OrderRepository orderRepository;
-	
+
+	private final static Logger log = getLogger(OrderController.class);	
 	
 	@PostMapping("/submit/{username}")
 	public ResponseEntity<UserOrder> submit(@PathVariable String username) {
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
+			// add log for null user and create order failure
+			log.error("OrderController: Failed to find user with username {}", username);
+			log.info("OrderController: Create order failure");
 			return ResponseEntity.notFound().build();
 		}
 		UserOrder order = UserOrder.createFromCart(user.getCart());
+		
+		// add log for create order success
+		log.info("OrderController: Create order success");
 		orderRepository.save(order);
 		return ResponseEntity.ok(order);
 	}
@@ -44,8 +51,13 @@ public class OrderController {
 	public ResponseEntity<List<UserOrder>> getOrdersForUser(@PathVariable String username) {
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
+			// add log for null user and create order failure
+			log.error("OrderController: Failed to find user with username {}", username);
+			log.info("OrderController: Create order failure");
 			return ResponseEntity.notFound().build();
 		}
+		// add log for create order success
+		log.info("OrderController: Create order success");
 		return ResponseEntity.ok(orderRepository.findByUser(user));
 	}
 }
