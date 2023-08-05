@@ -34,7 +34,17 @@ public class Item {
 	@Column(nullable = false)
 	@JsonProperty
 	private String description;
-	
+
+	// create constructors for easy instantiation in unit tests
+	public Item() {
+	}
+
+	public Item(String name, BigDecimal price, String description) {
+		this.name = name;
+		this.price = price;
+		this.description = description;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
